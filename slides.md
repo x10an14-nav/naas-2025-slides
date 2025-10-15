@@ -13,19 +13,20 @@ class: invert
 ---
 <!-- paginate: true -->
 ## En _gyllen sti_
-Naisplattformen er
+### Naisplattformen er
 1. _meningsstyrt_
 1. tiltenkt å _lette_ kognitiv last
 1. _akselerere_ utviklere's løp fra commit til produksjon
 
-Samtidig kan man "tråkke opp egen sti", om du så ønsker det 😁!
+<style scoped>p {font-size:26px;}</style>
+PS: _Samtidig kan man "tråkke opp egen sti", hvis det er ønskelig 😁!_
 <!--
 Notater til meg selv
 
 Som jeg håper å kunne se
 -->
 ---
-## Premisser & prinsipper og forventninger til brukeren(e)
+## Premisser, prinsipper & forventninger til brukeren(e)
 1. [12-factor app](https://12factor.net/) prinsippene
 1. Containeren er ditt grensesnitt
    1. Sammen m/`nais.yml` og [Nais Console](https://console.nais.io)
