@@ -15,7 +15,11 @@
     {
       devShells = eachSystem (pkgs: {
         default = pkgs.mkShell {
-          packages = [ pkgs.marp-cli ];
+          packages = with pkgs; [
+            marp-cli
+            kdePackages.okular
+            pdfpc
+          ];
         };
       });
       formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);

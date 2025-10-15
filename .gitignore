@@ -1,3 +1,7 @@
 # Nix stuffs
 /result*
 /.direnv
+
+# marp/slides
+*.pdf
+*.html
