@@ -9,6 +9,7 @@ class: invert
 
 # En **_Nais_** app!
 ## Hvordan ser egentlig en **_nais_** app ut?
+![bg right height:66%](https://github.com/nais/logo/raw/main/nais-v2-pride.svg)
 
 ---
 <!-- paginate: true -->
