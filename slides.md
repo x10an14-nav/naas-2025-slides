@@ -38,7 +38,7 @@ Og sånn PS/apropos, ingen skal føle seg _tvunget_ til å benytte seg av den gy
 Så om man ønsker å "seile på egenhånd og under eget ansvar", er det fortsatt mulig å "tråkke opp en egen sti"
 -->
 ---
-## Zero-Trust / "workload isolation"
+## Zero-Trust / tjenestesegmentering
 ### Koblinger utføres direkte & eksplisitt
 1. [AccessPolicies](https://docs.nais.io/workloads/application/reference/application-spec/#accesspolicy)
    - [Default allowed outbound](https://docs.nais.io/workloads/reference/access-policies/#default-allowed-external-hosts)
@@ -62,6 +62,21 @@ TODO: Tegn opp s2
    Toveis altså! =D
 
    Også er det "Workload identity" vi bruker for å identifisere appen, på tvers av tjenester, andre apper sine podder og containere, osv.
+-->
+---
+## Zero-Trust / tjenestesegmentering
+### Koblinger utføres direkte & eksplisitt
+3. Utover AccessPolicies, er apps segregert på teams => 1x namespace for Teamets apps
+   $\forall \text{app} \exists \text{team},$
+   $\forall \text{team} \exists \text{namespace} \in \text{cluster},$
+   $\forall \text{app} \exists \text{teamNamespace} \in \text{cluster}$
+
+<!--
+Naisplattformen legger opp til at enhver app tilhører ett _team_, som har ansvaret for en portefølje _apps_.
+Alle appene i denne porteføljen appene deployes da til ett og samme teamspesifikke namespace.
+Ønsker man eksempelvis `Dev` _óg_ `Test` miløer, er en god møte å løse slikt behov på å slenge på "miljøsuffiks" på de relevante appnavnene.
+
+Da oppnår man ønsket resultat ved å _duplisere_ relevante apps innad et namespace.
 -->
 ---
 ## Hva forventer plattformen av en **_nais_** app?
