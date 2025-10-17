@@ -97,24 +97,25 @@ spec:
 </div>
 
 <!--
-TODO: Tegn opp s2
+Så! Med premisset om en gylden sti introdusert, hvordan er Naisplattformen opinionated?
+Jo! Et eksempel på dette er at vi har med overlegg gått vekk fra tankegangen om at "ops har en brannmur man kan stole på, jeg som utvikler trenger ikke sikre at jeg kan snakke med ting, er jo åpent bak brannmuren!".
+Dette er ikke tilfellet i Naisplattformen. Ja, vi har brannmurer på plass for å hindre uvedkommendes adgang inn i tjenestene og clusterene, _men_ ingenting er åpent by default!
 
-   Så! Med premisset om en gylden sti introdusert, hvordan er Naisplattformen opinionated?
-   Jo! Et eksempel på dette er at vi har med overlegg gått vekk fra tankegangen om at "ops har en brannmur man kan stole på, jeg som utvikler trenger ikke sikre at jeg kan snakke med ting, er jo åpent bak brannmuren!".
-   Dette er ikke tilfellet i Naisplattformen. Ja, vi har brannmurer på plass for å hindre uvedkommendes adgang inn i tjenestene og clusterene, _men_ ingenting er åpent by default!
+Enhver app må eksplisitt åpne opp for hvem som skal kunne snakke med seg, _og_ hvem/hva de selv ønsker å snakke med!
+Toveis altså! =D
 
-   Enhver app må eksplisitt åpne opp for hvem som skal kunne snakke med seg, _og_ hvem/hva de selv ønsker å snakke med!
-   Toveis altså! =D
-
-   Også er det "Workload identity" vi bruker for å identifisere appen, på tvers av tjenester, andre apper sine podder og containere, osv.
+Også er det "Workload identity" vi bruker for å identifisere appen, på tvers av tjenester, andre apper sine podder og containere, osv.
 -->
 ---
 ## Zero-Trust / tjenestesegmentering
 ### Koblinger utføres direkte & eksplisitt
-3. Utover AccessPolicies, er apps segregert på teams => 1x namespace for Teamets apps
+3. Apps deployes _*segregert*_
    $\forall \text{app} \exists \text{team},$
    $\forall \text{team} \exists \text{namespace} \in \text{cluster},$
    $\forall \text{app} \exists \text{teamNamespace} \in \text{cluster}$
+   -  1x _namespace_ for **Teamets apps**
+
+![bg right height:60%](https://raw.githubusercontent.com/x10an14-nav/naas-2025-slides/refs/heads/main/resources/Cluster-app-segregering.excalidraw.svg)
 
 <!--
 Naisplattformen legger opp til at enhver app tilhører ett _team_, som har ansvaret for en portefølje _apps_.
