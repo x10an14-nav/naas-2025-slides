@@ -11,6 +11,18 @@ class: invert
 ## Hvordan ser _egentlig_ en **_nais_** app ut?
 ![bg right height:66%](https://github.com/nais/logo/raw/main/nais-v2-pride.svg)
 
+<!--
+Introduce yourself!
+"
+   Denne talken er ment å belyse forventninger og anbefalinger Nais teamer har til apper som kjører på Naisplattformen!
+   Disse rådene/tankene er hele tiden i bevegelse og kan endre seg, men nå bør dette holde som et flott utgangspunkt for hvor vi er idag!
+
+   Ikke nøl med å stille spørsmål til sist, evnt. i Slack!
+   Sliden inneholder lenker, og er å laste ned v/URLen i bånn av hver slide
+
+   Disse slidene er det ikke planlagt at skal bruke fulle 40 min, så det er tiltenkt tid til oppklaringsspørsmål underveis, og åpen spørsmålsrunde til sist!
+"
+-->
 ---
 <!-- paginate: true -->
 ## En _gyllen sti_
@@ -19,13 +31,18 @@ har som mål å lette _kognitiv last_ & _akselerere_ utvikleropplevelsen
     -> fra `git commit` til produksjon
 
 <!--
-Samtidig kan man "tråkke opp egen sti", hvis det er ønskelig 😁!
+Naisplattformen er ikke langt unna et livsverk i antall årsverk, hvor alle på teamet er senior utviklere med devops/plattform/opserfaring fra før av.
+Dermed ble beslutningen tatt i sin tid i NAV at Naisplattformen sin gyldne sti skal være opinionated, for å unngå kjente snublefeil og dyrekjøpte lærepenger.
+
+Og sånn PS/apropos, ingen skal føle seg _tvunget_ til å benytte seg av den gyldne stien vi tilbyr!
+Så om man ønsker å "seile på egenhånd og under eget ansvar", er det fortsatt mulig å "tråkke opp en egen sti"
 -->
 ---
 ## Zero-Trust / "workload isolation"
 ### Koblinger utføres direkte & eksplisitt
-   1. [Workload identity](https://cloud.google.com/iam/docs/workload-identity-federation-with-kubernetes)
-   1. [AccessPolicies](https://docs.nais.io/workloads/application/reference/application-spec/#accesspolicy)
+1. [AccessPolicies](https://docs.nais.io/workloads/application/reference/application-spec/#accesspolicy)
+   - [Default allowed outbound](https://docs.nais.io/workloads/reference/access-policies/#default-allowed-external-hosts)
+1. [Workload identity](https://cloud.google.com/iam/docs/workload-identity-federation-with-kubernetes)
 
 <style scoped>p {
    bottom: 10%;
@@ -35,6 +52,15 @@ Samtidig kan man "tråkke opp egen sti", hvis det er ønskelig 😁!
 [Frode](https://github.com/frodesundby) skrev en [forklarende bloggpost om dette](https://nais.io/blog/posts/zero-trust-networking-in-gcp) tilbake i 2020 🥳!
 <!--
 TODO: Tegn opp s2
+
+   Så! Med premisset om en gylden sti introdusert, hvordan er Naisplattformen opinionated?
+   Jo! Et eksempel på dette er at vi har med overlegg gått vekk fra tankegangen om at "ops har en brannmur man kan stole på, jeg som utvikler trenger ikke sikre at jeg kan snakke med ting, er jo åpent bak brannmuren!".
+   Dette er ikke tilfellet i Naisplattformen. Ja, vi har brannmurer på plass for å hindre uvedkommendes adgang inn i tjenestene og clusterene, _men_ ingenting er åpent by default!
+
+   Enhver app må eksplisitt åpne opp for hvem som skal kunne snakke med seg, _og_ hvem/hva de selv ønsker å snakke med!
+   Toveis altså! =D
+
+   Også er det "Workload identity" vi bruker for å identifisere appen, på tvers av tjenester, andre apper sine podder og containere, osv.
 -->
 ---
 ## Hva forventer plattformen av en **_nais_** app?
@@ -42,12 +68,14 @@ TODO: Tegn opp s2
 1. Eksplisitte koblinger til mellom **_nais_** apps/tjenester ✅
 <!--
 TODO: Tegn opp ønsket/foreslått databasearkitektur
+
+Ok, så hva annet er det Naisplattformen forventer av en "nais" app?
+
+Jo, ref dyrekjøpte lærepenger, så har Naisplattformen sin gyldne sti ingen muligheter for at flere nais apps snakker med samme PostgreSQL DB!
+
+Og som nevnt i forrige slide, tilkobling til en andre tjenester er styrt igjennom eksplisitt _opt-in_!
+Man må med andre ord "deklarare hvilke venner man ønsker å kunne snakke med"
 -->
----
-## Hva forventer plattformen av en **_nais_** app?
-1. Containeren din sitt innhold kan du få styre _helt selv_!
-1. Containeren er utviklerens grensesnitt å forholde seg til
-   1. Styrt av `nais.yml` og [Nais Console](https://console.nais.io)
 ---
 ## Hva forventer plattformen av en **_nais_** app?
 1. At man følger **_cloud native_** ledestjerner[1]
@@ -61,11 +89,48 @@ TODO: Tegn opp ønsket/foreslått databasearkitektur
    bottom: 10%;
 }</style>
 [1]: Inspirert av [12-factor app](https://12factor.net/) muligens?
+<!--
+Opp med hånden alle sammen!
+Og du som har hørt om 12-factor apps, kan ta ned håndend!
 
+12-factor apps er ikke nødvendigvis latest & greatest/helt relevant i disse dager, så derfor nevner jeg helle "Cloud Native" som ledestjerne, dog med et anerkjennende nikk til 12-factor sin historiske relevans her!
+
+En fin terskel/litmustest man kan stille seg selv for sin app, for å se hvor "Cloud Native" man er, er følgende som sliden beskriver!
+
+Gitt en tjeneste servert av en app, tåler tjenesten fint at
+- en vilkårlig pod blir drept
+- hvert 15. minutt?
+
+Hvis ja, da er appen på god vei til å oppfylle "Cloud Native" ledestjerner!
+-->
+---
+## Hva forventer plattformen av en **_nais_** app?
+1. Containeren din sitt innhold kan du få styre _helt selv_!
+1. Containeren er utviklerens grensesnitt å forholde seg til
+   1. Styrt av `nais.yml` og [Nais Console](https://console.nais.io)
+<!--
+Så, ifbm forventninger, tenkte jeg det kunne være greit å si to ord om hva utviklerene som bruker plattformen kan ha som forventninger!
+
+Og det er da for eksempel at hva som kjører innad i din container, det har du helt rett til å styre selv!
+Ja, Naisplattformen sitt API vil jo varsle om CVEer o.l., men om du velger å skrive appen i nodejs, haskell, rust, python, erlang, det bryr vi oss filla om!
+(Jeg personlig synes at det er morsommere å jobbe på Naisplattformen jo flere målspesifikke språk og verktøy vi kan støtte at kjører på den!)
+
+Så containeren som runtime er "grensesnittet" Naisplattformen ønsker at en utvikler må forholde seg til og tenke på!
+Selvfølgelig er det miljøvariable og filer med hemmeligheter som Naisplattformen legger inn i containeren og forventer at appen gjør bruk av, men disse jobber vi kontinuerlig med å holde oppdatert i Naisdocen.
+Og det gjør vi blant annet med den intensjon at utviklere for eksempel skal kunne kjøre opp samme container lokalt, som den som de kjører opp i produksjon!
+
+En utvikler sine "arbeidsflater" for å konfigurere og styre en nais app vil da bli/være `nais.yml`filen(e) man deployer vha, evnt. det vi tilbyr av click-ops muligheter i Nais console.
+-->
+---
+## Datatjenester **_Nais_** tilbyr
 ---
 ## Datatjenester **_Nais_** tilbyr
 1. Do you need [online analytical processing](https://en.wikipedia.org/wiki/Online_analytical_processing)?
    - [Google BigQuery](https://docs.nais.io/persistence/bigquery)
+<!-- _paginate: hold -->
+<!--
+Trenger du OLAP? Da tilbyr Naisplattformen BigQuery som en tjeneste!
+-->
 ---
 ## Datatjenester **_Nais_** tilbyr
 1. Do you need [online analytical processing](https://en.wikipedia.org/wiki/Online_analytical_processing)?
@@ -73,6 +138,10 @@ TODO: Tegn opp ønsket/foreslått databasearkitektur
 1. A relational database?
    - [PostgreSQL](https://docs.nais.io/persistence/postgresql/explanations/postgres-cluster)
 <!-- _paginate: hold -->
+<!--
+Trenger du OLTP? Da tilbyr Naisplattformen PostgreSQL som en tjeneste!
+Akkurat nå i to varianter, en velprøwd én hos Google Cloud Platform, og én som ennå er litt ny/muligens ikke tilgjengelig i hele NaaS ennå, in-cluster!
+-->
 ---
 ## Datatjenester **_Nais_** tilbyr
 1. Do you need [online analytical processing](https://en.wikipedia.org/wiki/Online_analytical_processing)?
@@ -82,13 +151,21 @@ TODO: Tegn opp ønsket/foreslått databasearkitektur
 1. Bøtter med statiske data?
    - [CDN](https://docs.nais.io/services/cdn)
 <!-- _paginate: hold -->
+<!--
+Trenger du CDN? Det tilbyr Naisplattformen óg!
+-->
+---
+## Datatjenester **_Nais_** tilbyr
+<!--
+Naisplattformen bruker Aiven.io som en tjenestetilbyder, en finsk SaaS tilbyder som fokuserer på datalagringstjenester.
+
+Og fra dem...
+-->
 ---
 ## Datatjenester **_Nais_** tilbyr
 1. Når du vil ha en kø?
    - [Kafka](https://docs.nais.io/persistence/kafka)
-<!--
-Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
--->
+<!-- _paginate: hold -->
 ---
 ## Datatjenester **_Nais_** tilbyr
 1. Når du vil ha en kø?
@@ -96,9 +173,6 @@ Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
 1. In-memory enkel key/value database?
    - [Valkey](https://docs.nais.io/persistence/valkey)
 <!-- _paginate: hold -->
-<!--
-Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
--->
 ---
 ## Datatjenester **_Nais_** tilbyr
 1. Når du vil ha en kø?
@@ -108,16 +182,10 @@ Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
 1. Ustrukturerte data man ønsker å fritekstsøke?
    - [OpenSearch](https://docs.nais.io/persistence/opensearch)
 <!-- _paginate: hold -->
-<!--
-Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
--->
 ---
 ## **_Nais_** tilbyr funksjonalitetsbrytermekanisme
 Via [Unleash](https://docs.nais.io/services/feature-toggling)!
-<!--
-Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
-   mange bruker BackendForFrontend(BFF) som proxy for frontendkode
--->
+
 ---
 ## Autentiseringsmekanismer **_Nais_** tilbyr
 - [LoginProxy](https://doc.cloud.nais.io/auth/explanations/#login-proxy)
@@ -130,6 +198,13 @@ Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
 Og på sikt enda fler 😉, følg med i [#nais-announcements](https://nav-it.slack.com/archives/C01DE3M9YBV)
 <!--
 Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
+
+   LoginProxy er en tjeneste Naisplattformen tilbyr hvor tanken er å håndtere automatisk redirect/påtvinging av login for alle brukere/forespørsler påvei inn til Nais appen!
+   LoginProxy håndterer dermed i samme slengen også login-session for brukere.
+
+   Man kan for eksempel i tillegg konfigurere at alle brukere _må_ ha en gyldig, innlogget Entra session før LoginProxy slipper nettverksforespørslene inn til Nais appen!
+
+   NB!: Enhver app sitter forstatt alene med _autoriserings_ansvaret, men om man benytter seg av LoginProxy
 -->
 ---
 ## **_Nais_** tilbyr full LGTM observability stack
@@ -155,15 +230,11 @@ Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
 <!-- _paginate: hold -->
 ---
 ## Typiske _**nais**_ apps vi ser
-1. Queue-worker, leser og agerer på kø/DB
 1. APIer, á la REST/gRPC/etc, for eksempel foran en DB
-1. Proxies, eksempelvis for noe on-prem
 1. Frontend apps, serverer kun html/js/css/lignende
 1. Backends-For-Frontend
----
-## Klassiske snublefeil
-1. "Jeg når ikke backendtjenesten!"
-   - Mottagende nais app mangler din app lagt til under [`spec.accessPolicy.inbound`](https://docs.nais.io/workloads/application/reference/application-spec/#accesspolicyinbound)
+1. Queue-worker, leser og agerer på kø/DB
+1. Proxies, eksempelvis for noe on-prem
 ---
 <!-- _paginate: false -->
 ## Spørsmål?
