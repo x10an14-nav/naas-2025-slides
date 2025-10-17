@@ -141,9 +141,10 @@ Man må med andre ord "deklarare hvilke venner man ønsker å kunne snakke med"
 ---
 ## Hva forventer plattformen av en **_nais_** app?
 1. At man følger **_cloud native_** ledestjerner[1]
-   1. Ledestjerne: takler tjenesten at appen din
-      - får én pod (gjerne blant flere)
-      - drept hvert kvarter?
+   Se også [Good practices](https://doc.nais.io/workloads/explanations/good-practices) hos nais doc'en! 😄
+   - En fin test: takler tjenesten at appen din
+      1. én pod (gjerne blant flere) blir drept
+      1. hvert kvarter?
 
 <style scoped>p {
    font-size:24px;
