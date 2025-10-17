@@ -128,9 +128,8 @@ Da oppnår man ønsket resultat ved å _duplisere_ relevante apps innad et names
 ## Hva forventer plattformen av en **_nais_** app?
 1. Ingen **_delte_** databasetilkoblinger på tvers av **_nais_** apps ❌
 1. Eksplisitte koblinger til mellom **_nais_** apps/tjenester ✅
+![bg right height:60%](https://raw.githubusercontent.com/x10an14-nav/naas-2025-slides/refs/heads/main/resources/databasearkitektur.svg)
 <!--
-TODO: Tegn opp ønsket/foreslått databasearkitektur
-
 Ok, så hva annet er det Naisplattformen forventer av en "nais" app?
 
 Jo, ref dyrekjøpte lærepenger, så har Naisplattformen sin gyldne sti ingen muligheter for at flere nais apps snakker med samme PostgreSQL DB!
