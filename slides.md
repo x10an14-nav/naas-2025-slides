@@ -42,6 +42,7 @@ Så om man ønsker å "seile på egenhånd og under eget ansvar", er det fortsat
 ### Koblinger utføres direkte & eksplisitt
 1. [AccessPolicies](https://docs.nais.io/workloads/application/reference/application-spec/#accesspolicy)
    - [Default allowed outbound](https://docs.nais.io/workloads/reference/access-policies/#default-allowed-external-hosts)
+   - [Ingresser == "åpen port inn via URL på nettverksnivå!"](https://docs.nais.io/workloads/application/how-to/expose)
 1. [Workload identity](https://cloud.google.com/iam/docs/workload-identity-federation-with-kubernetes)
 
 <style scoped>p {
@@ -189,6 +190,7 @@ Via [Unleash](https://docs.nais.io/services/feature-toggling)!
 ---
 ## Autentiseringsmekanismer **_Nais_** tilbyr
 - [LoginProxy](https://doc.cloud.nais.io/auth/explanations/#login-proxy)
+   - Kan også sikre OIDC compliant Autentisering på vegne av appen!
 
 <style scoped>p {
    font-size:24px;
@@ -202,7 +204,7 @@ Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
    LoginProxy er en tjeneste Naisplattformen tilbyr hvor tanken er å håndtere automatisk redirect/påtvinging av login for alle brukere/forespørsler påvei inn til Nais appen!
    LoginProxy håndterer dermed i samme slengen også login-session for brukere.
 
-   Man kan for eksempel i tillegg konfigurere at alle brukere _må_ ha en gyldig, innlogget Entra session før LoginProxy slipper nettverksforespørslene inn til Nais appen!
+   Man kan for eksempel i tillegg konfigurere at alle brukere _må_ ha en gyldig, innlogget OIDC session før LoginProxy slipper nettverksforespørslene inn til Nais appen!
 
    NB!: Enhver app sitter forstatt alene med _autoriserings_ansvaret, men om man benytter seg av LoginProxy
 -->
@@ -228,6 +230,39 @@ Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
 1. [Prometheus](https://docs.nais.io/observability/metrics/reference/metrics)
    - På sikt muligens Mimir...? Følg med i [#nais-announcements](https://nav-it.slack.com/archives/C01DE3M9YBV)!
 <!-- _paginate: hold -->
+---
+## Ambisjon: plattformuavhengighet!
+- Naisplattformen byr primært på [(F)OSS](https://en.wikipedia.org/wiki/Free_and_open-source_software) tjenester/integrasjoner
+   1. [LGTM](https://grafana.com/oss-vs-cloud) ➡️ OSS ✅
+   1. Alle\* datalagringstjenester ➡️ OSS ✅\*
+   1. LoginProxy, baserer seg på OIDC ➡️ OSS protokoll ✅
+   1. [Unleash](https://www.getunleash.io/open-source) ➡️ OSS ✅
+<style scoped>p {
+   font-size:24px;
+   position: absolute;
+   bottom: 10%;
+}</style>
+\* Utenom Google BigQuery! ⚠️
+<!--
+Alle tilstede har kjent på følelsen man kjenner på ved "vendor lock-in", og det er ikke en grei følelse å ha, ei helle situasjon å være i!
+
+Man designer/koder gjerne appene sine rundt de tjenester man forventer skal være tilgjengelige ved kjøretid.
+Med unntak av Google BigQuery, så har vi en liste med så godt som bare FOSS tjenester vi tilbyr deres apper å integrere mot i plattformen!
+-->
+---
+## Ambisjon: plattformuavhengighet!
+- Naisplattformen byr primært på [(F)OSS](https://en.wikipedia.org/wiki/Free_and_open-source_software) tjenester/integrasjoner
+   1. [LGTM](https://grafana.com/oss-vs-cloud) 100% OSS ✅
+   1. Alle\* datalagringstjenester OSS ✅
+   1. LoginProxy, baserer seg på OIDC ➡️ OSS protokoll ✅
+   1. [Unleash](https://www.getunleash.io/open-source) ➡️ OSS ✅
+- => Lettere (enn hos cloud-vendor `XYZ`) å koble seg om til en annen sky!
+<!-- _paginate: hold -->
+<!--
+En designtanke inn i Naisplattformen har vært at vi ønsker å låse oss selv og brukerene våres sine apper/tjenester i så liten grad som mulig!
+
+Så dette er kun en kjapp, ikke-nødvendigvis komplett, liste av faktorer vi tenker kan være relevante å huske på når man vurderer verktøy i plattformen, når temaet nærmer seg "vendor lock-in" !
+-->
 ---
 ## Typiske _**nais**_ apps vi ser
 1. APIer, á la REST/gRPC/etc, for eksempel foran en DB
