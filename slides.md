@@ -1,5 +1,14 @@
 ---
 lang: no
+style: |
+  .columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  pre {
+     font-size: 12px;
+  }
 ---
 <!--
 footer: https://github.com/x10an14-nav/naas-2025-slides - Christian C.
@@ -40,17 +49,53 @@ Så om man ønsker å "seile på egenhånd og under eget ansvar", er det fortsat
 ---
 ## Zero-Trust / tjenestesegmentering
 ### Koblinger utføres direkte & eksplisitt
+
+<style scoped>
+   p {
+      bottom: 10%;
+      font-size: 24px;
+      position: absolute;
+   }
+</style>
+<div class="columns">
+<div class="columns-left">
+
 1. [AccessPolicies](https://docs.nais.io/workloads/application/reference/application-spec/#accesspolicy)
    - [Default allowed outbound](https://docs.nais.io/workloads/reference/access-policies/#default-allowed-external-hosts)
    - [Ingresser == "åpen port inn via URL på nettverksnivå!"](https://docs.nais.io/workloads/application/how-to/expose)
 1. [Workload identity](https://cloud.google.com/iam/docs/workload-identity-federation-with-kubernetes)
 
-<style scoped>p {
-   bottom: 10%;
-   font-size: 24px;
-   position: absolute;
-}</style>
 [Frode](https://github.com/frodesundby) skrev en [forklarende bloggpost om dette](https://nais.io/blog/posts/zero-trust-networking-in-gcp) tilbake i 2020 🥳!
+
+</div>
+<div>
+
+```yaml
+spec:
+  accessPolicy:
+    inbound:
+      rules:
+      - application: otherApp
+        permissions:
+          roles:
+          - custom-role
+          scopes:
+          - custom-scope
+    outbound:
+      external:
+      - host: external-application.example.com
+      - host: 1.2.3.4
+        ports:
+        - port: 9200
+      rules:
+      - application: newApp
+        cluster: tenant-dev
+        namespace: fancyTeam
+```
+
+</div>
+</div>
+
 <!--
 TODO: Tegn opp s2
 
