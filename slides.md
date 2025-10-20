@@ -213,32 +213,103 @@ En utvikler sine "arbeidsflater" for å konfigurere og styre en nais app vil da 
 ## Datatjenester **_Nais_** tilbyr
 ---
 ## Datatjenester **_Nais_** tilbyr
+<style scoped>
+   pre {
+      font-size: 26px;
+   }
+</style>
+<!-- _paginate: hold -->
+<div class="columns">
+<div class="columns-left">
+
 1. Trenger du en relasjonsdatabase ([OnLine Transactional Processing](https://en.wikipedia.org/wiki/Online_transaction_processing))?
    - [PostgreSQL](https://docs.nais.io/persistence/postgresql/explanations/postgres-cluster)
-<!-- _paginate: hold -->
+</div>
+<div>
+
+```yaml
+TODO
+```
+
+</div>
+</div>
+
 <!--
 Trenger du OLAP? Da tilbyr Naisplattformen BigQuery som en tjeneste!
 -->
 ---
 ## Datatjenester **_Nais_** tilbyr
+<style scoped>
+   pre {
+      font-size: 26px;
+   }
+</style>
+<!-- _paginate: hold -->
+<div class="columns">
+<div class="columns-left">
+
 1. Trenger du en relasjonsdatabase ([OnLine Transactional Processing](https://en.wikipedia.org/wiki/Online_transaction_processing))?
    - [PostgreSQL](https://docs.nais.io/persistence/postgresql/explanations/postgres-cluster)
 1. Dataanalyse ([OnLine Analytical Processing](https://en.wikipedia.org/wiki/Online_analytical_processing))?
    - [Google BigQuery](https://docs.nais.io/persistence/bigquery)
-<!-- _paginate: hold -->
+</div>
+<div>
+
+```yaml
+TODO
+```
+
+</div>
+</div>
+
 <!--
 Trenger du OLTP? Da tilbyr Naisplattformen PostgreSQL som en tjeneste!
 Akkurat nå i to varianter, en velprøwd én hos Google Cloud Platform, og én som ennå er litt ny/muligens ikke tilgjengelig i hele NaaS ennå, in-cluster!
 -->
 ---
 ## Datatjenester **_Nais_** tilbyr
+<style scoped>
+   pre {
+      font-size: 26px;
+   }
+</style>
+<!-- _paginate: hold -->
+<div class="columns">
+<div class="columns-left">
+
 1. Trenger du en relasjonsdatabase ([OnLine Transactional Processing](https://en.wikipedia.org/wiki/Online_transaction_processing))?
    - [PostgreSQL](https://docs.nais.io/persistence/postgresql/explanations/postgres-cluster)
 1. Dataanalyse ([OnLine Analytical Processing](https://en.wikipedia.org/wiki/Online_analytical_processing))?
    - [Google BigQuery](https://docs.nais.io/persistence/bigquery)
 1. Statiske webressurser?
    - [CDN](https://docs.nais.io/services/cdn)
-<!-- _paginate: hold -->
+</div>
+<div>
+
+```yaml
+name: Push to CDN
+
+on:
+  push:
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - uses: 'actions/checkout@v4'
+      - name: Upload static files to CDN
+        uses: nais/deploy/actions/cdn-upload/v2@master
+        with:
+          team: <team name>
+          source: path/to/assets/
+          destination: <contextPath, eg. /my-app/dist>
+```
+
+</div>
+</div>
+
 <!--
 Trenger du CDN? Det tilbyr Naisplattformen óg!
 -->
