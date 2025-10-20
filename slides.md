@@ -13,7 +13,6 @@ style: |
 <!--
 footer: https://github.com/x10an14-nav/naas-2025-slides - Christian C.
 header: En **nais** app
-class: invert
 -->
 
 # En **_Nais_** app!
@@ -127,7 +126,7 @@ Da oppnår man ønsket resultat ved å _duplisere_ relevante apps innad et names
 ---
 ## Hva forventer plattformen av en **_nais_** app?
 1. Ingen **_delte_** databasetilkoblinger på tvers av **_nais_** apps ❌
-1. Eksplisitte koblinger til mellom **_nais_** apps/tjenester ✅
+1. Eksplisitte koblinger mellom **_nais_** apps/tjenester ✅
 ![bg right height:60%](https://raw.githubusercontent.com/x10an14-nav/naas-2025-slides/refs/heads/main/resources/databasearkitektur.svg)
 <!--
 Ok, så hva annet er det Naisplattformen forventer av en "nais" app?
@@ -150,7 +149,7 @@ Man må med andre ord "deklarare hvilke venner man ønsker å kunne snakke med"
    position: absolute;
    bottom: 10%;
 }</style>
-[1]: Inspirert av [12-factor app](https://12factor.net/) muligens?
+[1]: Inspirert av [12-factor app](https://12factor.net/)!
 <!--
 Opp med hånden alle sammen!
 Og du som har hørt om 12-factor apps, kan ta ned håndend!
@@ -167,9 +166,36 @@ Hvis ja, da er appen på god vei til å oppfylle "Cloud Native" ledestjerner!
 -->
 ---
 ## Hva forventer plattformen av en **_nais_** app?
+<style scoped>
+   pre {
+      font-size: 22px;
+   }
+</style>
+<div class="columns">
+<div class="columns-left">
+
 1. Containeren din sitt innhold kan du få styre _helt selv_!
 1. Containeren er utviklerens grensesnitt å forholde seg til
    1. Styrt av `nais.yml` og [Nais Console](https://console.nais.io)
+</div>
+<div>
+
+```yaml
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    firstLabel: value1
+    secondLabel: value2
+  name: myapplication
+  namespace: myteam
+spec:
+   ...
+```
+
+</div>
+</div>
+
 <!--
 Så, ifbm forventninger, tenkte jeg det kunne være greit å si to ord om hva utviklerene som bruker plattformen kan ha som forventninger!
 
@@ -187,18 +213,18 @@ En utvikler sine "arbeidsflater" for å konfigurere og styre en nais app vil da 
 ## Datatjenester **_Nais_** tilbyr
 ---
 ## Datatjenester **_Nais_** tilbyr
-1. Do you need [online analytical processing](https://en.wikipedia.org/wiki/Online_analytical_processing)?
-   - [Google BigQuery](https://docs.nais.io/persistence/bigquery)
+1. Trenger du en relasjonsdatabase ([OnLine Transactional Processing](https://en.wikipedia.org/wiki/Online_transaction_processing))?
+   - [PostgreSQL](https://docs.nais.io/persistence/postgresql/explanations/postgres-cluster)
 <!-- _paginate: hold -->
 <!--
 Trenger du OLAP? Da tilbyr Naisplattformen BigQuery som en tjeneste!
 -->
 ---
 ## Datatjenester **_Nais_** tilbyr
-1. Do you need [online analytical processing](https://en.wikipedia.org/wiki/Online_analytical_processing)?
-   - [Google BigQuery](https://docs.nais.io/persistence/bigquery)
-1. A relational database?
+1. Trenger du en relasjonsdatabase ([OnLine Transactional Processing](https://en.wikipedia.org/wiki/Online_transaction_processing))?
    - [PostgreSQL](https://docs.nais.io/persistence/postgresql/explanations/postgres-cluster)
+1. Dataanalyse ([OnLine Analytical Processing](https://en.wikipedia.org/wiki/Online_analytical_processing))?
+   - [Google BigQuery](https://docs.nais.io/persistence/bigquery)
 <!-- _paginate: hold -->
 <!--
 Trenger du OLTP? Da tilbyr Naisplattformen PostgreSQL som en tjeneste!
@@ -206,11 +232,11 @@ Akkurat nå i to varianter, en velprøwd én hos Google Cloud Platform, og én s
 -->
 ---
 ## Datatjenester **_Nais_** tilbyr
-1. Do you need [online analytical processing](https://en.wikipedia.org/wiki/Online_analytical_processing)?
-   - [Google BigQuery](https://docs.nais.io/persistence/bigquery)
-1. A relational database?
+1. Trenger du en relasjonsdatabase ([OnLine Transactional Processing](https://en.wikipedia.org/wiki/Online_transaction_processing))?
    - [PostgreSQL](https://docs.nais.io/persistence/postgresql/explanations/postgres-cluster)
-1. Bøtter med statiske data?
+1. Dataanalyse ([OnLine Analytical Processing](https://en.wikipedia.org/wiki/Online_analytical_processing))?
+   - [Google BigQuery](https://docs.nais.io/persistence/bigquery)
+1. Statiske webressurser?
    - [CDN](https://docs.nais.io/services/cdn)
 <!-- _paginate: hold -->
 <!--
@@ -224,30 +250,143 @@ Naisplattformen bruker Aiven.io som en tjenestetilbyder, en finsk SaaS tilbyder 
 Og fra dem...
 -->
 ---
+<style scoped>
+   pre {
+      font-size: 26px;
+   }
+</style>
+<!-- _paginate: hold -->
+<div class="columns">
+<div class="columns-left">
+
 ## Datatjenester **_Nais_** tilbyr
 1. Når du vil ha en kø?
-   - [Kafka](https://docs.nais.io/persistence/kafka)
-<!-- _paginate: hold -->
+   - [Kafka](https://docs.nais.io/persistence/kafka/how-to/access)
+     - [Topic](https://docs.nais.io/persistence/kafka/how-to/manage-acl)
+
+</div>
+<div>
+
+```yaml
+...
+spec:
+  kafka:
+    pool: <MY-POOL>
+---
+apiVersion: nais.io/v1alpha1
+kind: Topic
+metadata:
+  name: <MY-TOPIC>
+...
+spec:
+  pool: <MY-POOL>
+  acl:
+  - application: <APPLICATION-NAME>
+    # Applications named <APPLICATION-NAME>
+    # from <SOME-TEAM> team
+    team: <SOME-TEAM>
+    # has read
+    access: write
+  - team: <MY-TEAM>
+    # All apps belonging to <MY-TEAM>
+    # with a name starting with `queue-` prefix
+    application: queue-*
+    # can write to this topic
+    access: readwrite
+  - team: <TRUSTED-TEAM>
+    # Apps belonging to <TRUSTED-TEAM>
+    application: *
+    access: read
+  ...
+```
+
+</div>
+</div>
+
 ---
 ## Datatjenester **_Nais_** tilbyr
+<style scoped>
+   pre {
+      font-size: 26px;
+   }
+</style>
+<!-- _paginate: hold -->
+<div class="columns">
+<div class="columns-left">
+
 1. Når du vil ha en kø?
-   - [Kafka](https://docs.nais.io/persistence/kafka)
+   - [Kafka](https://docs.nais.io/persistence/kafka/how-to/access)
 1. In-memory enkel key/value database?
-   - [Valkey](https://docs.nais.io/persistence/valkey)
-<!-- _paginate: hold -->
+   - [Valkey](https://docs.nais.io/persistence/valkey/how-to/use-in-workload)
+
+</div>
+<div>
+
+```yaml
+...
+spec:
+  valkey:
+    - instance: $NAME
+      access: read
+      # access: readwrite
+      # access: write
+      # access: admin
+```
+
+</div>
+</div>
+
 ---
 ## Datatjenester **_Nais_** tilbyr
+<style scoped>
+   pre {
+      font-size: 26px;
+   }
+</style>
+<!-- _paginate: hold -->
+<div class="columns">
+<div class="columns-left">
+
 1. Når du vil ha en kø?
-   - [Kafka](https://docs.nais.io/persistence/kafka)
+   - [Kafka](https://docs.nais.io/persistence/kafka/how-to/access)
 1. In-memory enkel key/value database?
    - [Valkey](https://docs.nais.io/persistence/valkey)
 1. Ustrukturerte data man ønsker å fritekstsøke?
-   - [OpenSearch](https://docs.nais.io/persistence/opensearch)
+   - [OpenSearch](https://docs.nais.io/persistence/opensearch/how-to/use-in-workload)
+
+</div>
+<div>
+
+```yaml
+...
+spec:
+  openSearch:
+    instance: $NAME
+    access: read
+    # access: readwrite
+    # access: write
+    # access: admin
+```
+
+</div>
+</div>
+
 <!-- _paginate: hold -->
 ---
-## **_Nais_** tilbyr funksjonalitetsbrytermekanisme
-Via [Unleash](https://docs.nais.io/services/feature-toggling)!
+## Friends don't let friends build their own feature flag system\[1]
+### **_Nais_** tilbyr [Unleash](https://docs.nais.io/services/feature-toggling)!
 
+<style scoped>
+   p {
+      bottom: 10%;
+      font-size: 24px;
+      position: absolute;
+   }
+</style>
+\[1]: https://www.getunleash.io
+<!--
+Naisplattformen tilbyr ethvert team sin egen unleash instans for å styre funksjonsbrytere for sine nais apps!
+-->
 ---
 ## Autentiseringsmekanismer **_Nais_** tilbyr
 - [LoginProxy](https://doc.cloud.nais.io/auth/explanations/#login-proxy)
@@ -288,12 +427,62 @@ Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
 1. [Loki](https://docs.nais.io/observability/logging/how-to/loki)
 1. [Grafana](https://docs.nais.io/observability/metrics/how-to/dashboard)
 1. [Tempo](https://docs.nais.io/observability/tracing/how-to/tempo)
-1. [Prometheus](https://docs.nais.io/observability/metrics/reference/metrics)
-   - På sikt muligens Mimir...? Følg med i [#nais-announcements](https://nav-it.slack.com/archives/C01DE3M9YBV)!
+1. [Prometheus/Mimir](https://docs.nais.io/observability/metrics/reference/metrics)
 <!-- _paginate: hold -->
+---
+## **_Nais_** tilbyr alerts
+<style scoped>
+   pre {
+      font-size: 22px;
+   }
+</style>
+<div class="columns">
+<div class="columns-left">
+
+### To alternativer listet i [Nais doc'en](https://docs.nais.io/observability/alerting)
+
+- `GrafanaAlerts`
+- `PrometheusRule`
+Her er et `PrometheusRule` eksempel
+
+</div>
+<div>
+
+```yaml
+...
+spec:
+  groups:
+  - name: nameOfMyAlert
+    rules:
+    - alert: InstanceDown
+      expr: >
+         kube_deployment_status_replicas_available{
+            namespace="<namespace>",
+            deployment="<application name>"
+         } == 0
+      for: 5m
+      annotations:
+        consequence: Application is unavailable
+        action: >
+         `kubectl describe pod <podname>`
+         ->
+         `kubectl logs <podname>`
+        summary: |-
+          This is a multi-line summary with
+          linebreaks and everything. Here you can give a more detailed
+          summary of what this alert is about
+      labels:
+        namespace: <MY-TEAM> # required
+        severity: critical
+```
+
+</div>
+</div>
+
 ---
 ## Ambisjon: plattformuavhengighet!
 - Naisplattformen byr primært på [(F)OSS](https://en.wikipedia.org/wiki/Free_and_open-source_software) tjenester/integrasjoner
+   1. [Kubernetes](https://kubernetes.io) ➡️ OSS ✅
    1. [LGTM](https://grafana.com/oss-vs-cloud) ➡️ OSS ✅
    1. Alle\* datalagringstjenester ➡️ OSS ✅\*
    1. LoginProxy, baserer seg på OIDC ➡️ OSS protokoll ✅
@@ -313,11 +502,12 @@ Med unntak av Google BigQuery, så har vi en liste med så godt som bare FOSS tj
 ---
 ## Ambisjon: plattformuavhengighet!
 - Naisplattformen byr primært på [(F)OSS](https://en.wikipedia.org/wiki/Free_and_open-source_software) tjenester/integrasjoner
+   1. [Kubernetes](https://kubernetes.io) ➡️ OSS ✅
    1. [LGTM](https://grafana.com/oss-vs-cloud) 100% OSS ✅
    1. Alle\* datalagringstjenester OSS ✅
    1. LoginProxy, baserer seg på OIDC ➡️ OSS protokoll ✅
    1. [Unleash](https://www.getunleash.io/open-source) ➡️ OSS ✅
-- => Lettere (enn hos cloud-vendor `XYZ`) å koble seg om til en annen sky!
+- ➡️ Lettere (enn hos cloud-vendor `XYZ`) å koble seg om til en annen sky!
 <!-- _paginate: hold -->
 <!--
 En designtanke inn i Naisplattformen har vært at vi ønsker å låse oss selv og brukerene våres sine apper/tjenester i så liten grad som mulig!
