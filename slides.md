@@ -7,7 +7,7 @@ style: |
     gap: 1rem;
   }
   pre {
-     font-size: 12px;
+     font-size: 24px;
   }
 ---
 <!--
@@ -35,8 +35,8 @@ Introduce yourself!
 <!-- paginate: true -->
 ## En _gyllen sti_
 ### Naisplattformen er _opinionated_
-har som mål å lette _kognitiv last_ & _akselerere_ utvikleropplevelsen
-    -> fra `git commit` til produksjon
+Mål: å lette _kognitiv last_ & _akselerere_ utvikleropplevelsen
+- -> fra `git commit` til produksjon
 
 <!--
 Naisplattformen er ikke langt unna et livsverk i antall årsverk, hvor alle på teamet er senior utviklere med devops/plattform/opserfaring fra før av.
@@ -46,21 +46,30 @@ Og sånn PS/apropos, ingen skal føle seg _tvunget_ til å benytte seg av den gy
 Så om man ønsker å "seile på egenhånd og under eget ansvar", er det fortsatt mulig å "tråkke opp en egen sti"
 -->
 ---
+## Typiske _**nais**_ apps vi ser
+1. APIer, á la REST/gRPC/etc, for eksempel foran en DB
+1. Frontend apps, serverer kun html/js/css/lignende
+1. Backends-For-Frontend
+1. Queue-worker, leser og agerer på kø/DB
+1. Proxies, eksempelvis for noe on-prem
+---
 ## Zero-Trust / tjenestesegmentering
-### Koblinger utføres direkte & eksplisitt
-
 <style scoped>
    p {
       bottom: 10%;
       font-size: 24px;
       position: absolute;
    }
+   pre {
+      font-size: 16px;
+   }
 </style>
 <div class="columns">
 <div class="columns-left">
 
+### Koblinger utføres direkte & eksplisitt
 1. [AccessPolicies](https://docs.nais.io/workloads/application/reference/application-spec/#accesspolicy)
-   - [Default allowed outbound](https://docs.nais.io/workloads/reference/access-policies/#default-allowed-external-hosts)
+   - [Default outbound allowList](https://docs.nais.io/workloads/reference/access-policies/#default-allowed-external-hosts)
    - [Ingresser == "åpen port inn via URL på nettverksnivå!"](https://docs.nais.io/workloads/application/how-to/expose)
 1. [Workload identity](https://cloud.google.com/iam/docs/workload-identity-federation-with-kubernetes)
 
@@ -82,7 +91,7 @@ spec:
           - custom-scope
     outbound:
       external:
-      - host: external-application.example.com
+      - host: ekstern-app.eksempel.no
       - host: 1.2.3.4
         ports:
         - port: 9200
@@ -107,14 +116,30 @@ Også er det "Workload identity" vi bruker for å identifisere appen, på tvers 
 -->
 ---
 ## Zero-Trust / tjenestesegmentering
+<style scoped>
+   p {
+      bottom: 10%;
+      font-size: 24px;
+      position: absolute;
+   }
+</style>
+<div class="columns">
+<div class="columns-left">
+
 ### Koblinger utføres direkte & eksplisitt
-3. Apps deployes _*segregert*_
+3. Apps deployes _segregert*_
    $\forall \text{app} \exists \text{team},$
    $\forall \text{team} \exists \text{namespace} \in \text{cluster},$
    $\forall \text{app} \exists \text{teamNamespace} \in \text{cluster}$
-   -  1x _namespace_ for **Teamets apps**
+   -  1x **namespace** for _alle_ teamets apper per **cluster**
 
-![bg right height:60%](https://raw.githubusercontent.com/x10an14-nav/naas-2025-slides/refs/heads/main/resources/Cluster-app-segregering.excalidraw.svg)
+</div>
+<div>
+
+![height:60%](https://raw.githubusercontent.com/x10an14-nav/naas-2025-slides/refs/heads/main/resources/Cluster-app-segregering.excalidraw.svg)
+
+</div>
+</div>
 
 <!--
 Naisplattformen legger opp til at enhver app tilhører ett _team_, som har ansvaret for en portefølje _apps_.
@@ -166,11 +191,6 @@ Hvis ja, da er appen på god vei til å oppfylle "Cloud Native" ledestjerner!
 -->
 ---
 ## Hva forventer plattformen av en **_nais_** app?
-<style scoped>
-   pre {
-      font-size: 22px;
-   }
-</style>
 <div class="columns">
 <div class="columns-left">
 
@@ -213,11 +233,6 @@ En utvikler sine "arbeidsflater" for å konfigurere og styre en nais app vil da 
 ## Datatjenester **_Nais_** tilbyr
 ---
 ## Datatjenester **_Nais_** tilbyr
-<style scoped>
-   pre {
-      font-size: 26px;
-   }
-</style>
 <!-- _paginate: hold -->
 <div class="columns">
 <div class="columns-left">
@@ -228,7 +243,15 @@ En utvikler sine "arbeidsflater" for å konfigurere og styre en nais app vil da 
 <div>
 
 ```yaml
-TODO
+...
+spec:
+  postgres:
+    cluster:
+      majorVersion: "17"
+      resources:
+        cpu: 100m
+        diskSize: 1Gi
+        memory: 2G
 ```
 
 </div>
@@ -239,11 +262,6 @@ Trenger du OLAP? Da tilbyr Naisplattformen BigQuery som en tjeneste!
 -->
 ---
 ## Datatjenester **_Nais_** tilbyr
-<style scoped>
-   pre {
-      font-size: 26px;
-   }
-</style>
 <!-- _paginate: hold -->
 <div class="columns">
 <div class="columns-left">
@@ -256,7 +274,13 @@ Trenger du OLAP? Da tilbyr Naisplattformen BigQuery som en tjeneste!
 <div>
 
 ```yaml
-TODO
+...
+spec:
+  gcp:
+    bigQueryDatasets:
+      - name: <MY-DATASET>
+        permission: READ
+        # permission: READWRITE
 ```
 
 </div>
@@ -268,11 +292,6 @@ Akkurat nå i to varianter, en velprøwd én hos Google Cloud Platform, og én s
 -->
 ---
 ## Datatjenester **_Nais_** tilbyr
-<style scoped>
-   pre {
-      font-size: 26px;
-   }
-</style>
 <!-- _paginate: hold -->
 <div class="columns">
 <div class="columns-left">
@@ -288,7 +307,6 @@ Akkurat nå i to varianter, en velprøwd én hos Google Cloud Platform, og én s
 
 ```yaml
 name: Push to CDN
-
 on:
   push:
 jobs:
@@ -300,11 +318,11 @@ jobs:
     steps:
       - uses: 'actions/checkout@v4'
       - name: Upload static files to CDN
-        uses: nais/deploy/actions/cdn-upload/v2@master
+        uses: nais/deploy/actions/cdn-upload/v2
         with:
           team: <team name>
           source: path/to/assets/
-          destination: <contextPath, eg. /my-app/dist>
+          destination: <contextPath -> /my-app/dist>
 ```
 
 </div>
@@ -314,24 +332,11 @@ jobs:
 Trenger du CDN? Det tilbyr Naisplattformen óg!
 -->
 ---
-## Datatjenester **_Nais_** tilbyr
-<!--
-Naisplattformen bruker Aiven.io som en tjenestetilbyder, en finsk SaaS tilbyder som fokuserer på datalagringstjenester.
-
-Og fra dem...
--->
----
-<style scoped>
-   pre {
-      font-size: 26px;
-   }
-</style>
-<!-- _paginate: hold -->
 <div class="columns">
 <div class="columns-left">
 
 ## Datatjenester **_Nais_** tilbyr
-1. Når du vil ha en kø?
+4. Når du vil ha en kø?
    - [Kafka](https://docs.nais.io/persistence/kafka/how-to/access)
      - [Topic](https://docs.nais.io/persistence/kafka/how-to/manage-acl)
 
@@ -348,7 +353,6 @@ apiVersion: nais.io/v1alpha1
 kind: Topic
 metadata:
   name: <MY-TOPIC>
-...
 spec:
   pool: <MY-POOL>
   acl:
@@ -368,26 +372,25 @@ spec:
     # Apps belonging to <TRUSTED-TEAM>
     application: *
     access: read
-  ...
 ```
 
 </div>
 </div>
 
+<!--
+Naisplattformen bruker Aiven.io som en tjenestetilbyder, en finsk SaaS tilbyder som fokuserer på datalagringstjenester.
+
+Og fra dem...
+-->
 ---
 ## Datatjenester **_Nais_** tilbyr
-<style scoped>
-   pre {
-      font-size: 26px;
-   }
-</style>
 <!-- _paginate: hold -->
 <div class="columns">
 <div class="columns-left">
 
-1. Når du vil ha en kø?
+4. Når du vil ha en kø?
    - [Kafka](https://docs.nais.io/persistence/kafka/how-to/access)
-1. In-memory enkel key/value database?
+5. In-memory enkel key/value database?
    - [Valkey](https://docs.nais.io/persistence/valkey/how-to/use-in-workload)
 
 </div>
@@ -409,20 +412,15 @@ spec:
 
 ---
 ## Datatjenester **_Nais_** tilbyr
-<style scoped>
-   pre {
-      font-size: 26px;
-   }
-</style>
 <!-- _paginate: hold -->
 <div class="columns">
 <div class="columns-left">
 
-1. Når du vil ha en kø?
+4. Når du vil ha en kø?
    - [Kafka](https://docs.nais.io/persistence/kafka/how-to/access)
-1. In-memory enkel key/value database?
+5. In-memory enkel key/value database?
    - [Valkey](https://docs.nais.io/persistence/valkey)
-1. Ustrukturerte data man ønsker å fritekstsøke?
+6. Ustrukturerte data man ønsker å fritekstsøke?
    - [OpenSearch](https://docs.nais.io/persistence/opensearch/how-to/use-in-workload)
 
 </div>
@@ -501,7 +499,6 @@ Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
 1. [Prometheus/Mimir](https://docs.nais.io/observability/metrics/reference/metrics)
 <!-- _paginate: hold -->
 ---
-## **_Nais_** tilbyr alerts
 <style scoped>
    pre {
       font-size: 22px;
@@ -510,6 +507,7 @@ Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
 <div class="columns">
 <div class="columns-left">
 
+## **_Nais_** tilbyr alerts
 ### To alternativer listet i [Nais doc'en](https://docs.nais.io/observability/alerting)
 
 - `GrafanaAlerts`
@@ -520,7 +518,10 @@ Her er et `PrometheusRule` eksempel
 <div>
 
 ```yaml
-...
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  ...
 spec:
   groups:
   - name: nameOfMyAlert
@@ -540,7 +541,8 @@ spec:
          `kubectl logs <podname>`
         summary: |-
           This is a multi-line summary with
-          linebreaks and everything. Here you can give a more detailed
+          linebreaks and everything. Here you
+          can give a more detailed
           summary of what this alert is about
       labels:
         namespace: <MY-TEAM> # required
@@ -586,17 +588,10 @@ En designtanke inn i Naisplattformen har vært at vi ønsker å låse oss selv o
 Så dette er kun en kjapp, ikke-nødvendigvis komplett, liste av faktorer vi tenker kan være relevante å huske på når man vurderer verktøy i plattformen, når temaet nærmer seg "vendor lock-in" !
 -->
 ---
-## Typiske _**nais**_ apps vi ser
-1. APIer, á la REST/gRPC/etc, for eksempel foran en DB
-1. Frontend apps, serverer kun html/js/css/lignende
-1. Backends-For-Frontend
-1. Queue-worker, leser og agerer på kø/DB
-1. Proxies, eksempelvis for noe on-prem
----
 <!-- _paginate: false -->
 ## Spørsmål?
 
-- Husk at [#nais](https://nav-it.slack.com/archives/C09CHA215S5) kanalen  er alltid tilgjengelig
+- Husk at [#nais](https://nav-it.slack.com/archives/C09CHA215S5) kanalen  er alltid tilgjengelig,
   og du er _ikke_ alene om å lure på det du undrer om 😅!
 
 <style scoped>p {
