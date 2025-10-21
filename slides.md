@@ -13,26 +13,33 @@ style: |
 <!--
 footer: https://github.com/x10an14-nav/naas-2025-slides - Christian C.
 header: En **nais** app
+paginate: true
 -->
 
+<!-- _paginate: hide -->
 # En **_Nais_** app!
 ## Hvordan ser _egentlig_ en **_nais_** app ut?
 ![bg right height:66%](https://github.com/nais/logo/raw/main/nais-v2-pride.svg)
 
 <!--
-Introduce yourself!
-"
-   Denne talken er ment å belyse forventninger og anbefalinger Nais teamer har til apper som kjører på Naisplattformen!
-   Disse rådene/tankene er hele tiden i bevegelse og kan endre seg, men nå bør dette holde som et flott utgangspunkt for hvor vi er idag!
+- Introduce yourself!
 
-   Ikke nøl med å stille spørsmål til sist, evnt. i Slack!
-   Sliden inneholder lenker, og er å laste ned v/URLen i bånn av hver slide
+Denne talken er ment å belyse forventninger og anbefalinger Nais teamer har til apper som kjører på Naisplattformen!
+Kanskje også liten "salgspitch" :tounge-in-cheek:
 
-   Disse slidene er det ikke planlagt at skal bruke fulle 40 min, så det er tiltenkt tid til oppklaringsspørsmål underveis, og åpen spørsmålsrunde til sist!
-"
+Det som blir sagt idag er hele tiden i bevegelse og kan endre seg, men nå bør dette holde som et flott utgangspunkt for hvor vi er idag!
+
+Ikke nøl med å stille spørsmål til sist, evnt. i Slack!
+ Sliden inneholder lenker, og er å laste ned v/URLen i bånn av hver slide
+
+Disse slidene er det ikke planlagt at skal bruke fulle 40 min, så det er åpent for oppklaringsspørsmål underveis, samt spørsmålsrunde til sist!
 -->
 ---
-<!-- paginate: true -->
+## Notabene
+Alle kodeeksempler i sliden er tatt fra https://docs.nais.io
+   - Når noe blir oppdatert(utdatert?), så vil "latest & greatest" være å finne der!
+
+---
 ## En _gyllen sti_
 ### Naisplattformen er _opinionated_
 Mål: å lette _kognitiv last_ & _akselerere_ utvikleropplevelsen
@@ -48,8 +55,25 @@ Så om man ønsker å "seile på egenhånd og under eget ansvar", er det fortsat
 ---
 ## Typiske _**nais**_ apps vi ser
 1. APIer, á la REST/gRPC/etc, for eksempel foran en DB
+---
+## Typiske _**nais**_ apps vi ser
+<!-- _paginate: hold -->
+1. APIer, á la REST/gRPC/etc, for eksempel foran en DB
 1. Frontend apps, serverer kun html/js/css/lignende
-  1. Backends-For-Frontend
+   1. Backends-For-Frontend
+---
+## Typiske _**nais**_ apps vi ser
+<!-- _paginate: hold -->
+1. APIer, á la REST/gRPC/etc, for eksempel foran en DB
+1. Frontend apps, serverer kun html/js/css/lignende
+   1. Backends-For-Frontend
+1. Queue-worker, leser og agerer på kø/DB
+---
+## Typiske _**nais**_ apps vi ser
+<!-- _paginate: hold -->
+1. APIer, á la REST/gRPC/etc, for eksempel foran en DB
+1. Frontend apps, serverer kun html/js/css/lignende
+   1. Backends-For-Frontend
 1. Queue-worker, leser og agerer på kø/DB
 1. Proxies, eksempelvis for noe on-prem
 ---
@@ -68,10 +92,10 @@ Så om man ønsker å "seile på egenhånd og under eget ansvar", er det fortsat
 <div class="columns-left">
 
 ### Koblinger utføres direkte & eksplisitt
+1. [Workload identity](https://cloud.google.com/iam/docs/workload-identity-federation-with-kubernetes)
 1. [AccessPolicies](https://docs.nais.io/workloads/application/reference/application-spec/#accesspolicy)
    - [Default outbound allowList](https://docs.nais.io/workloads/reference/access-policies/#default-allowed-external-hosts)
    - [Ingresser == "åpen port inn via URL på nettverksnivå!"](https://docs.nais.io/workloads/application/how-to/expose)
-1. [Workload identity](https://cloud.google.com/iam/docs/workload-identity-federation-with-kubernetes)
 
 [Frode](https://github.com/frodesundby) skrev en [forklarende bloggpost om dette](https://nais.io/blog/posts/zero-trust-networking-in-gcp) tilbake i 2020 🥳!
 
@@ -106,13 +130,13 @@ spec:
 
 <!--
 Så! Med premisset om en gylden sti introdusert, hvordan er Naisplattformen opinionated?
-Jo! Et eksempel på dette er at vi har med overlegg gått vekk fra tankegangen om at "ops har en brannmur man kan stole på, jeg som utvikler trenger ikke sikre at jeg kan snakke med ting, er jo åpent bak brannmuren!".
+Det er "Workload identity" vi bruker for å identifisere appen, på tvers av tjenester, andre apper sine podder og containere, osv.
+
+Et bedre eksempel på dette er at vi har med overlegg gått vekk fra tankegangen om at "ops har en brannmur man kan stole på, jeg som utvikler trenger ikke sikre at jeg kan snakke med ting, er jo åpent bak brannmuren!".
 Dette er ikke tilfellet i Naisplattformen. Ja, vi har brannmurer på plass for å hindre uvedkommendes adgang inn i tjenestene og clusterene, _men_ ingenting er åpent by default!
 
 Enhver app må eksplisitt åpne opp for hvem som skal kunne snakke med seg, _og_ hvem/hva de selv ønsker å snakke med!
 Toveis altså! =D
-
-Også er det "Workload identity" vi bruker for å identifisere appen, på tvers av tjenester, andre apper sine podder og containere, osv.
 -->
 ---
 ## Zero-Trust / tjenestesegmentering
@@ -149,12 +173,33 @@ Alle appene i denne porteføljen appene deployes da til ett og samme teamspesifi
 Da oppnår man ønsket resultat ved å _duplisere_ relevante apps innad et namespace.
 -->
 ---
+## Autentiseringsmekanismer **_Nais_** tilbyr
+- [LoginProxy](https://doc.cloud.nais.io/auth/explanations/#login-proxy)
+   - Kan også sikre OIDC compliant Autentisering på vegne av appen!
+
+<style scoped>p {
+   font-size:24px;
+   position: absolute;
+   bottom: 10%;
+}</style>
+Og på sikt enda fler 😉, følg med i [#nais-announcements](https://nav-it.slack.com/archives/C01DE3M9YBV)
+<!--
+Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
+
+LoginProxy er en tjeneste Naisplattformen tilbyr hvor tanken er å håndtere automatisk redirect/påtvinging av login for alle brukere/forespørsler påvei inn til Nais appen!
+LoginProxy håndterer dermed i samme slengen også login-session for brukere.
+
+Man kan for eksempel i tillegg konfigurere at alle brukere _må_ ha en gyldig, innlogget OIDC session før LoginProxy slipper nettverksforespørslene inn til Nais appen!
+
+NB!: Enhver app sitter forstatt alene med _autoriserings_ansvaret, men om man benytter seg av LoginProxy
+-->
+---
 ## Hva forventer plattformen av en **_nais_** app?
 1. Ingen **_delte_** databasetilkoblinger på tvers av **_nais_** apps ❌
 1. Eksplisitte koblinger mellom **_nais_** apps/tjenester ✅
 ![bg right height:60%](https://raw.githubusercontent.com/x10an14-nav/naas-2025-slides/refs/heads/main/resources/databasearkitektur.svg)
 <!--
-Ok, så hva annet er det Naisplattformen forventer av en "nais" app?
+Ok, så hva mer forventes Naisplattformen av en "nais" app?
 
 Jo, ref dyrekjøpte lærepenger, så har Naisplattformen sin gyldne sti ingen muligheter for at flere nais apps snakker med samme PostgreSQL DB!
 
@@ -174,7 +219,7 @@ Man må med andre ord "deklarare hvilke venner man ønsker å kunne snakke med"
    position: absolute;
    bottom: 10%;
 }</style>
-[1]: Inspirert av [12-factor app](https://12factor.net/)!
+[1]: Det ble inspirert en gang av (nå litt utdatert?) [12-factor apps](https://12factor.net/)!
 <!--
 Opp med hånden alle sammen!
 Og du som har hørt om 12-factor apps, kan ta ned håndend!
@@ -457,27 +502,6 @@ spec:
 Naisplattformen tilbyr ethvert team sin egen unleash instans for å styre funksjonsbrytere for sine nais apps!
 -->
 ---
-## Autentiseringsmekanismer **_Nais_** tilbyr
-- [LoginProxy](https://doc.cloud.nais.io/auth/explanations/#login-proxy)
-   - Kan også sikre OIDC compliant Autentisering på vegne av appen!
-
-<style scoped>p {
-   font-size:24px;
-   position: absolute;
-   bottom: 10%;
-}</style>
-Og på sikt enda fler 😉, følg med i [#nais-announcements](https://nav-it.slack.com/archives/C01DE3M9YBV)
-<!--
-Ikoner hentet fra: https://www.nerdfonts.com/cheat-sheet
-
-   LoginProxy er en tjeneste Naisplattformen tilbyr hvor tanken er å håndtere automatisk redirect/påtvinging av login for alle brukere/forespørsler påvei inn til Nais appen!
-   LoginProxy håndterer dermed i samme slengen også login-session for brukere.
-
-   Man kan for eksempel i tillegg konfigurere at alle brukere _må_ ha en gyldig, innlogget OIDC session før LoginProxy slipper nettverksforespørslene inn til Nais appen!
-
-   NB!: Enhver app sitter forstatt alene med _autoriserings_ansvaret, men om man benytter seg av LoginProxy
--->
----
 ## **_Nais_** tilbyr full LGTM observability stack
 1. [Loki](https://docs.nais.io/observability/logging/how-to/loki)
 ---
@@ -580,7 +604,8 @@ Med unntak av Google BigQuery, så har vi en liste med så godt som bare FOSS tj
    1. Alle\* datalagringstjenester OSS ✅
    1. LoginProxy, baserer seg på OIDC ➡️ OSS protokoll ✅
    1. [Unleash](https://www.getunleash.io/open-source) ➡️ OSS ✅
-- ➡️ Lettere (enn hos cloud-vendor `XYZ`) å koble seg om til en annen sky!
+
+➡️ Lettere (enn hos cloud-vendor `XYZ`) å koble seg om til en annen sky!
 <!-- _paginate: hold -->
 <!--
 En designtanke inn i Naisplattformen har vært at vi ønsker å låse oss selv og brukerene våres sine apper/tjenester i så liten grad som mulig!
