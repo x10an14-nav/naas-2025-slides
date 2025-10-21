@@ -49,7 +49,7 @@ Så om man ønsker å "seile på egenhånd og under eget ansvar", er det fortsat
 ## Typiske _**nais**_ apps vi ser
 1. APIer, á la REST/gRPC/etc, for eksempel foran en DB
 1. Frontend apps, serverer kun html/js/css/lignende
-1. Backends-For-Frontend
+  1. Backends-For-Frontend
 1. Queue-worker, leser og agerer på kø/DB
 1. Proxies, eksempelvis for noe on-prem
 ---
